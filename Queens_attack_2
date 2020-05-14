@@ -1,0 +1,73 @@
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the queensAttack function below.
+def queensAttack(n, k, r_q, c_q, obstacles):
+    upleft=0
+    downright=0
+    downleft=0
+    upright=0    
+    if(r_q>=c_q and r_q>=abs(n-c_q+1)):
+        upleft=abs(r_q-n)
+        downright=abs(c_q-n)
+        downleft=abs(1-c_q)
+        upright=abs(r_q-n)
+    if(r_q>c_q and r_q<abs(n-c_q+1)):
+        upleft=abs(c_q-1)
+        downright=abs(r_q-1)
+        downleft=abs(1-c_q)
+        upright=abs(r_q-n)        
+    if(r_q<=c_q and r_q<=abs(n-c_q+1)):
+        upleft=abs(c_q-1)
+        downright=abs(r_q-1)
+        downleft=abs(r_q-1)
+        upright=abs(c_q-n)
+    if(r_q<c_q and r_q>abs(n-c_q+1)):
+        upleft=abs(r_q-n)
+        downright=abs(c_q-n)
+        downleft=abs(r_q-1)
+        upright=abs(c_q-n)        
+    right=n-c_q
+    left=c_q-1
+    up=n-r_q
+    down=r_q-1
+    h=[]
+    for i in range(8):
+        h.append([])
+    for obs in obstacles:
+        r=obs[0]
+        c=obs[1]
+        if(r==r_q and c<c_q):
+            h[0].append(abs(c-c_q)-1)
+        if(r==r_q and c>c_q):
+            h[1].append(abs(c-c_q)-1)
+        if(c==c_q and r>r_q):
+            h[2].append(abs(r-r_q)-1)
+        if(c==c_q and r<r_q):
+            h[3].append(abs(r-r_q)-1)
+        if(c<c_q and r>r_q and (r-r_q)==(c_q-c)):
+            h[4].append(abs(r-r_q)-1)
+        if(c>c_q and r<r_q and (r-r_q)==(c_q-c)):
+            h[5].append(abs(r-r_q)-1)
+        if(c<c_q and r<r_q and (r-r_q)==(c-c_q)):
+            h[6].append(abs(r-r_q)-1)
+        if(c>c_q and r>r_q and (r-r_q)==(c-c_q)):
+            h[7].append(abs(r-r_q)-1)
+    h1=[]
+    h1.append(left)
+    h1.append(right)
+    h1.append(up)
+    h1.append(down)
+    h1.append(upleft)
+    h1.append(downright)
+    h1.append(downleft)
+    h1.append(upright)
+    if(k==0):
+        return sum(h1)
+    for i in range(8):
+        if(len(h[i])!=0):
+            h1[i]=min(h[i])
+    return sum(h1)
