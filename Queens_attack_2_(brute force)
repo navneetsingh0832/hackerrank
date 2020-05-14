@@ -1,0 +1,121 @@
+import math
+import os
+import random
+import re
+import sys
+
+# Complete the queensAttack function below.
+def queensAttack(n, k, r_q, c_q, obstacles):
+    dig1=[]
+    dig2=[]
+    hoz=[]
+    ver=[]
+    if(r_q>c_q):
+        ci=1
+        ri=1+(r_q-c_q)
+        for i in range(n-abs(r_q-c_q)):
+            if(ri==r_q and ci==c_q):
+                dig1.append([ri, ci, 1])
+                ri+=1
+                ci+=1                
+            else:            
+                dig1.append([ri, ci, 0])
+                ri+=1
+                ci+=1    
+
+    if(r_q<c_q):
+        ri=1
+        ci=1+abs(r_q-c_q)
+        for i in range(n-abs(r_q-c_q)):
+            if(ri==r_q and ci==c_q):
+                dig1.append([ri, ci, 1])
+                ri+=1
+                ci+=1                
+            else:            
+                dig1.append([ri, ci, 0])
+                ri+=1
+                ci+=1  
+                  
+    if(r_q==c_q):
+        ri=1
+        ci=1
+        for i in range(n-abs(r_q-c_q)):
+            if(ri==r_q and ci==c_q):
+                dig1.append([ri, ci, 1])
+                ri+=1
+                ci+=1                
+            else:            
+                dig1.append([ri, ci, 0])
+                ri+=1
+                ci+=1        
+      
+ 
+    for i in range(n):
+        if(i+1==c_q):
+            hoz.append([r_q, i+1, 1])
+        else:
+            hoz.append([r_q, i+1, 0])
+
+    for i in range(n):
+        if(i+1==r_q):
+            ver.append([i+1, c_q, 1])
+        else:
+            ver.append([i+1, c_q, 0])
+
+    dig2.append([r_q, c_q, 1])
+    ri=r_q+1
+    ci=c_q-1
+    ri1=r_q-1
+    ci1=c_q+1    
+    while ri<=n and ci>=1:
+        dig2.append([ri, ci,0])
+        ri+=1
+        ci-=1
+    for i in range(len(dig2)//2):
+        save=dig2[len(dig2)-1-i]
+        dig2[len(dig2)-1-i]=dig2[i]
+        dig2[i]=save
+    while ri1>=1 and ci1<=n:
+        dig2.append([ri1, ci1,0])
+        ri1-=1
+        ci1+=1
+    h=[]
+    h.append(ver)
+    h.append(hoz)
+    h.append(dig1)
+    h.append(dig2)
+    for i in range(k):
+        for j in range(4):
+            for z in range(len(h[j])):
+                if(obstacles[i][0]==h[j][z][0] and obstacles[i][1]==h[j][z][1]):
+                    h[j][z][2]=2
+    h1=[]
+    for i in range(4):
+        ans1=0
+        ans2=0
+        a=0
+        for j in range(len(h[i])):
+            if(a==0 and h[i][j][2]==2):
+                ans1=0
+                a+=1
+            if(a!=0 and h[i][j][2]==2):
+                ans1=0
+                a+=1
+            if(a!=0 and h[i][j][2]==0):
+                ans1+=1
+            if(a==0 and h[i][j][2]==0):
+                ans1+=1
+            if(h[i][j][2]==1):
+                break
+        a=0
+        for j in range(len(h[i])):
+            if(a==0 and h[i][j][2]==1):
+                ans2=0
+                a+=1
+            if(a!=0 and h[i][j][2]==2):
+                ans2+=0
+                break
+            if(a!=0 and h[i][j][2]==0):
+                ans2+=1
+        h1.append(ans1+ans2)
+    return sum(h1)
