@@ -1,0 +1,56 @@
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'getTotalX' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER_ARRAY a
+#  2. INTEGER_ARRAY b
+#
+
+def getTotalX(a, b):
+    a1=a[:]
+    lcm=1
+    for i in range(len(a)):
+        for j in range(len(a)):
+            if(a1[i]!=0 and a1[j]!=0 and i!=j):
+                o=0
+                if a1[j]%a1[i]==0 and j!=len(a)-1:
+                    a1[j]=a1[j]//a[i]
+                    o+=1
+                if j==len(a)-1:
+                    if a1[j]%a1[i]==0:
+                        a1[j]=a1[j]//a[i]
+                        lcm=lcm*a1[i]
+                        a1[i]=0
+                    else:
+                        if o!=0:
+                            lcm=lcm*a1[i]
+                            a1[i]=0
+
+    for ele in a1:
+        if ele!=0:
+            lcm=lcm*ele
+    print(a1)
+    ls=[]
+    lim=max(b)
+    num=lcm
+    i=1
+    while num<=lim:
+        ls.append(num)
+        i+=1
+        num=lcm*i
+    ans=[]
+    for ele in ls:
+        n=0
+        for ele1 in b:
+            if ele1%ele==0:
+                n+=1
+        if n==len(b):
+            ans.append(ele)
+    return len(ans)
